@@ -20,6 +20,13 @@ interface MobileMenuProps {
 
 // Mobile Menu Component
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+  const handleGoogleSignIn = async() => {
+    // Implement Google Auth logic
+    window.open(
+        `https://vconnection-server.vercel.app/auth/google`,
+        "_self"
+    )
+  };
   if (!isOpen) return null;
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
@@ -52,7 +59,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           <Button
             className="w-3/4"
             variant="secondary"
-            onClick={() => router.push("/loginRegisterPage")}
+            onClick={() => handleGoogleSignIn()}
           >
             Try Now
           </Button>
@@ -76,7 +83,13 @@ const DesktopNav: React.FC = () => (
 // Navbar Component
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-
+  const handleGoogleSignIn = async() => {
+    // Implement Google Auth logic
+    window.open(
+        `https://vconnection-server.vercel.app/auth/google`,
+        "_self"
+    )
+  };
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const router = useRouter();
@@ -133,7 +146,7 @@ const Navbar: React.FC = () => {
                   <Button
                   variant="secondary"
                   className="hidden lg:inline-flex items-center"
-                  onClick={() => router.push("/loginRegisterPage")}
+                  onClick={() => handleGoogleSignIn()}
                 >
                   Try Now
                 </Button>
