@@ -44,10 +44,10 @@ const LoginPage: React.FC = () => {
   };
 
   const router = useRouter()
-  const token = localStorage.getItem("authToken")
-  if(token){
-    router.push("/dashboard")
-  }
+//   const token = localStorage.getItem("authToken")
+//   if(token){
+//     router.push("/dashboard")
+//   }
   useEffect(() => {
     // Get token from URL query params
     const params = new URLSearchParams(window.location.search);
