@@ -1,8 +1,8 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 
 // Navigation links
 const NAV_LINKS = [
@@ -21,18 +21,42 @@ interface MobileMenuProps {
 // Mobile Menu Component
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
-
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authToken");
+    setToken(storedToken);
+  }, []);
   return (
     <div className="lg:hidden bg-neutral-900/90 shadow-lg p-4">
       <div className="flex flex-col items-center gap-4 py-4">
         {NAV_LINKS.map((link) => (
-          <a key={link.href} href={link.href} onClick={onClose} className="text-white text-lg">
+          <a
+            key={link.href}
+            href={link.href}
+            onClick={onClose}
+            className="text-white text-lg"
+          >
             {link.label}
           </a>
         ))}
-        <Button className="w-3/4" variant="secondary" onClick={() => window.location.href = "/try"}>
-          Try Now
-        </Button>
+        {token ? (
+          <Button
+            className="w-3/4"
+            variant="secondary"
+            onClick={() => router.push("/dashboard")}
+          >
+            Dashboard
+          </Button>
+        ) : (
+          <Button
+            className="w-3/4"
+            variant="secondary"
+            onClick={() => router.push("/loginRegisterPage")}
+          >
+            Try Now
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -55,7 +79,12 @@ const Navbar: React.FC = () => {
 
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
   const closeMobileMenu = () => setMobileMenuOpen(false);
-
+  const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authToken");
+    setToken(storedToken);
+  }, []);
   return (
     <>
       <header className="py-4 lg:py-8 fixed w-full top-0 z-50 bg-transparent shadow-md">
@@ -65,8 +94,12 @@ const Navbar: React.FC = () => {
               {/* Platform Name */}
               <div className="flex items-center">
                 <span className="text-white text-3xl font-extrabold tracking-wide uppercase">
-                  <span className="bg-white text-black px-3 py-1 rounded-lg shadow-md">V</span>
-                  <span className="text-lime-400 ml-3 drop-shadow-lg">Connection</span>
+                  <span className="bg-white text-black px-3 py-1 rounded-lg shadow-md">
+                    V
+                  </span>
+                  <span className="text-lime-400 ml-3 drop-shadow-lg">
+                    Connection
+                  </span>
                 </span>
               </div>
 
@@ -75,14 +108,36 @@ const Navbar: React.FC = () => {
 
               {/* Mobile Menu Toggle and Buttons */}
               <div className="flex justify-end gap-4">
-                <button type="button" onClick={toggleMobileMenu} className="lg:hidden">
-                  {isMobileMenuOpen ? <X className="text-white" size={30} /> : <Menu className="text-white" size={30} />}
+                <button
+                  type="button"
+                  onClick={toggleMobileMenu}
+                  className="lg:hidden"
+                >
+                  {isMobileMenuOpen ? (
+                    <X className="text-white" size={30} />
+                  ) : (
+                    <Menu className="text-white" size={30} />
+                  )}
                 </button>
 
                 {/* Desktop Try Now Button */}
-                <Button variant="secondary" className="hidden lg:inline-flex items-center" onClick={() => window.location.href = "/try"}>
+                {token ? (
+                  <Button
+                    variant="secondary"
+                    className="hidden lg:inline-flex items-center"
+                    onClick={() => router.push("/dashboard")}
+                  >
+                    Dashboard
+                  </Button>
+                ) : (
+                  <Button
+                  variant="secondary"
+                  className="hidden lg:inline-flex items-center"
+                  onClick={() => router.push("/loginRegisterPage")}
+                >
                   Try Now
                 </Button>
+                )}
               </div>
             </div>
 
