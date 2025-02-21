@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
   const handleGoogleSignIn = async() => {
     // Implement Google Auth logic
     window.open(
-        `http://localhost:8080/auth/google`,
+        `https://vconnection-server.vercel.app/auth/google`,
         "_self"
     )
   };
